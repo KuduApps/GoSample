@@ -89,9 +89,13 @@ func main() {
 
     g := gin.Default()
     g.Use(GinLogger(f))
-    g.LoadHTMLGlob("D:\\home\\site\\wwwroot\\GinTemplate\\*")
+    if os.Getenv("HTTP_PLATFORM_PORT") != "" {
+      g.LoadHTMLFiles("D:\\home\\site\\wwwroot\\index-gin.html")
+    } else {
+      g.LoadHTMLFiles("index-gin.html")
+    }
     g.GET("/g/", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "index.tmpl", gin.H{
+        c.HTML(http.StatusOK, "index-gin.html", gin.H{
             "title" : "Hello from Gin!",
         })
     })
@@ -129,4 +133,3 @@ func GinLogger(out io.Writer) gin.HandlerFunc {
 		)
 	}
 }
-
